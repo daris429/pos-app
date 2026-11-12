@@ -31,12 +31,12 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'reference_no'  => 'required|unique:purchases,reference_no',
-            'supplier_id'   => 'required|exists:suppliers,id',
-            'purchase_date' => 'required|date',
-            'products'      => 'required|array|min:1',
-            'products.*.id' => 'required|exists:products,id',
-            'products.*.qty'=> 'required|integer|min:1',
+            'reference_no'     => 'required|unique:purchases,reference_no',
+            'supplier_id'      => 'required|exists:suppliers,id',
+            'purchase_date'    => 'required|date',
+            'products'         => 'required|array|min:1',
+            'products.*.id'    => 'required|exists:products,id',
+            'products.*.qty'   => 'required|integer|min:1',
             'products.*.price' => 'required|numeric|min:0',
         ]);
 
@@ -58,18 +58,16 @@ class PurchaseController extends Controller
                 $totalAmount += $subtotal;
 
                 PurchaseItem::create([
-                    'purchase_id'   => $purchase->id,
-                    'product_id'    => $item['id'],
-                    'quantity'      => $item['qty'],
-                    'purchase_price'=> $item['price'],
-                    'subtotal'      => $subtotal,
+                    'purchase_id'    => $purchase->id,
+                    'product_id'     => $item['id'],
+                    'quantity'       => $item['qty'],
+                    'purchase_price' => $item['price'],
+                    'subtotal'       => $subtotal,
                 ]);
 
-                // OTOMATIS TAMBAH STOK PRODUK DI DATABASE
+                // Otomatis tambah stok produk dan update harga beli
                 $product = Product::findOrFail($item['id']);
                 $product->increment('stock', $item['qty']);
-                
-                // Opsional: Update harga beli terakhir jika ada perubahan
                 $product->update(['purchase_price' => $item['price']]);
             }
 
