@@ -1,0 +1,67 @@
+
+/* Custom POS Styling */
+body {
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+}
+
+/* Card General */
+.card-custom {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+    background-color: #ffffff !important;
+}
+
+/* Dashboard Stat Cards */
+.bg-stat-blue {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+}
+
+.bg-stat-green {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+}
+
+.bg-stat-orange {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+}
+
+.bg-stat-cyan {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+}
+
+.stat-icon {
+    font-size: 2.5rem !important;
+    opacity: 0.3 !important;
+    line-height: 1 !important;
+}
+
+/* Table Styling */
+.table-custom thead th {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.table-custom tbody td {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+/* Pagination Fix */
+.pagination svg {
+    max-width: 1.25rem !important;
+    max-height: 1.25rem !important;
+}
+
