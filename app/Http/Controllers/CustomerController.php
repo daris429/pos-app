@@ -32,14 +32,16 @@ class CustomerController extends Controller implements HasMiddleware
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'phone' => 'nullable|string|max:20|regex:/^08[0-9]{8,11}$/|unique:customers,phone',
-            'email' => 'nullable|email|max:150',
-            'address' => 'nullable|string|max:500',
-        ]);
-
+    {$request->validate([
+    'name'    => 'required|string|max:255',
+    'phone'   => 'required|regex:/^[0-9]{1,15}$/',
+    'email'   => 'nullable|email|max:255',
+    'address' => 'nullable|string',
+], [
+    'name.required'  => 'Nama pelanggan wajib diisi.',
+    'phone.required' => 'No. Telepon wajib diisi.',
+    'phone.regex'    => 'No. Telepon harus berupa angka dan maksimal 15 digit.',
+]);
         Customer::create($validated);
         return redirect()->route('customers.index')->with('success', 'Pelanggan berhasil ditambahkan.');
     }

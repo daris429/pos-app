@@ -2,19 +2,27 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
         <h4 class="fw-bold m-0">Daftar Produk</h4>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProductModal">
-            <i class="bi bi-plus-lg me-1"></i> Tambah Produk
-        </button>
-    </div>
-
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="d-flex align-items-center gap-2">
+            <form action="{{ route('products.index') }}" method="GET" class="d-flex gap-2">
+                <div class="input-group">
+                    <input type="text" name="search" id="product-search" class="form-control" placeholder="Cari produk / SKU..." value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    @if(request('search'))
+                        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary" title="Reset">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    @endif
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary text-nowrap" data-bs-toggle="modal" data-bs-target="#createProductModal">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Produk
+            </button>
         </div>
-    @endif
+    </div>
 
     <div class="card border-0 shadow-sm p-3">
         <div class="table-responsive">
@@ -226,3 +234,19 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('product-search');
+    let searchTimeout;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function () {
+            searchInput.form.requestSubmit();
+        }, 300);
+    });
+});
+</script>
+@endpush

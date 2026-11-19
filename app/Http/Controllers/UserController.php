@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        return redirect()->route('users.index');
     }
 
     public function store(Request $request)
@@ -24,7 +24,7 @@ class UserController extends Controller
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
             'role'     => 'required|in:admin,kasir',
         ]);
 
@@ -40,7 +40,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return redirect()->route('users.index');
     }
 
     public function update(Request $request, User $user)
@@ -58,7 +58,7 @@ class UserController extends Controller
         ];
 
         if ($request->filled('password')) {
-            $request->validate(['password' => 'min:6']);
+            $request->validate(['password' => 'min:6|confirmed']);
             $data['password'] = Hash::make($request->password);
         }
 

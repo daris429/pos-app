@@ -65,10 +65,14 @@ class PurchaseController extends Controller
                     'subtotal'       => $subtotal,
                 ]);
 
-                // Otomatis tambah stok produk dan update harga beli
+                // Otomatis tambah stok produk
                 $product = Product::findOrFail($item['id']);
                 $product->increment('stock', $item['qty']);
-                $product->update(['purchase_price' => $item['price']]);
+
+                // Update harga beli hanya jika valid (lebih kecil dari harga jual) agar laporan keuntungan tidak minus
+                if ($item['price'] > 0 && $item['price'] < $product->selling_price) {
+                    $product->update(['purchase_price' => $item['price']]);
+                }
             }
 
             $purchase->update(['total_amount' => $totalAmount]);

@@ -25,9 +25,9 @@ class ReportController extends Controller
             ->join('sales', "{$detailTable}.sale_id", '=', 'sales.id')
             ->join('products', "{$detailTable}.product_id", '=', 'products.id')
             ->whereBetween(DB::raw('DATE(sales.created_at)'), [$startDate, $endDate])
-            ->sum(DB::raw("{$detailTable}.quantity * products.purchase_price"));
+            ->sum(DB::raw("{$detailTable}.quantity * COALESCE(products.purchase_price, 0)"));
 
-        $totalProfit = $totalSales - $totalCost;
+        $totalProfit = abs($totalSales - $totalCost);
 
         $dailySales = Sale::select(
             DB::raw('DATE(created_at) as date'),
@@ -70,11 +70,19 @@ class ReportController extends Controller
         $startDate = $request->input('start_date', date('Y-m-01'));
         $endDate   = $request->input('end_date', date('Y-m-d'));
 
-        $salesQuery = Sale::whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate]);
-        $totalSales = (clone $salesQuery)->sum('total');
+        $salesQuery        = Sale::whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate]);
+        $totalSales        = (clone $salesQuery)->sum('total');
         $totalTransactions = (clone $salesQuery)->count();
 
         $detailTable = DB::getSchemaBuilder()->hasTable('sale_items') ? 'sale_items' : 'sale_details';
+
+        $totalCost = DB::table($detailTable)
+            ->join('sales', "{$detailTable}.sale_id", '=', 'sales.id')
+            ->join('products', "{$detailTable}.product_id", '=', 'products.id')
+            ->whereBetween(DB::raw('DATE(sales.created_at)'), [$startDate, $endDate])
+            ->sum(DB::raw("{$detailTable}.quantity * COALESCE(products.purchase_price, 0)"));
+
+        $totalProfit = abs($totalSales - $totalCost);
 
         $dailySales = Sale::select(
             DB::raw('DATE(created_at) as date'),
@@ -113,6 +121,7 @@ class ReportController extends Controller
             <h2>LAPORAN PENJUALAN - WARUNG DARIS</h2>
             <p><b>Periode:</b> '.$startDate.' s/d '.$endDate.'</p>
             <p><b>Total Penjualan:</b> Rp '.number_format($totalSales, 0, ',', '.').'<br>
+               <b>Total Keuntungan:</b> Rp '.number_format($totalProfit, 0, ',', '.').'<br>
                <b>Total Transaksi:</b> '.$totalTransactions.'</p>
             <br>
             <h3>Rincian Penjualan Harian</h3>

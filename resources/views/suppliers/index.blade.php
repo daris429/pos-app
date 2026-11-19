@@ -45,7 +45,7 @@
                             <button class="btn btn-sm btn-outline-warning p-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $supplier->id }}">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                            <form action="{{ route("suppliers.destroy", $supplier->id) }}" method="POST" class="d-inline" onsubmit="return confirm(\"Hapus supplier ini?\")">
+                            <form action="{{ route("suppliers.destroy", $supplier->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus supplier ini?')">
                                 @csrf
                                 @method("DELETE")
                                 <button type="submit" class="btn btn-sm btn-outline-danger p-1"><i class="bi bi-trash"></i></button>
@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">No. Telepon</label>
-                                            <input type="text" name="phone" class="form-control" value="{{ $supplier->phone }}">
+                                            <input type="text" name="phone" class="form-control" value="{{ $supplier->phone }}" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">No. Telepon</label>
-                        <input type="text" name="phone" class="form-control">
+                        <input type="text" name="phone" class="form-control" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>

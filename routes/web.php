@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     // Dashboard & Profil
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
     // Transaksi Kasir
     Route::get('kasir', [SaleController::class, 'create'])->name('sales.kasir');

@@ -9,6 +9,17 @@
     </button>
 </div>
 
+@if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <table class="table table-hover table-sm mb-0 align-middle">
@@ -32,7 +43,7 @@
                             <button class="btn btn-sm btn-outline-warning p-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $customer->id }}">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                            <form action="{{ route("customers.destroy", $customer->id) }}" method="POST" class="d-inline" onsubmit="return confirm(\"Hapus pelanggan ini?\")">
+                            <form action="{{ route("customers.destroy", $customer->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus pelanggan ini?')">
                                 @csrf
                                 @method("DELETE")
                                 <button type="submit" class="btn btn-sm btn-outline-danger p-1"><i class="bi bi-trash"></i></button>
@@ -53,12 +64,12 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label class="form-label">Nama</label>
-                                            <input type="text" name="name" class="form-control" value="{{ $customer->name }}" required>
+                                            <label class="form-label">Nama <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" class="form-control" value="{{ $customer->name }}" required oninvalid="this.setCustomValidity('Nama pelanggan wajib diisi!')" oninput="this.setCustomValidity('')">
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">No. Telepon</label>
-                                            <input type="text" name="phone" class="form-control" value="{{ $customer->phone }}">
+                                            <label class="form-label">No. Telepon <span class="text-danger">*</span></label>
+                                            <input type="text" name="phone" class="form-control" value="{{ $customer->phone }}" maxlength="15" inputmode="numeric" required oninvalid="this.setCustomValidity('No. Telepon wajib diisi!')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
@@ -100,12 +111,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Nama Pelanggan</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <label class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control" required oninvalid="this.setCustomValidity('Nama pelanggan wajib diisi!')" oninput="this.setCustomValidity('')">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">No. Telepon</label>
-                        <input type="text" name="phone" class="form-control">
+                        <label class="form-label">No. Telepon <span class="text-danger">*</span></label>
+                        <input type="text" name="phone" class="form-control" maxlength="15" inputmode="numeric" required oninvalid="this.setCustomValidity('No. Telepon wajib diisi!')" oninput="this.setCustomValidity(''); this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
